@@ -1,24 +1,33 @@
 package kz.galina.springMVC.controller;
 
+import kz.galina.springMVC.model.Person;
+import kz.galina.springMVC.service.CalculatorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
 @Controller
-@RequestMapping("/first")
+@RequestMapping("/")
 public class FirstController {
 
-    @GetMapping("/hello")
-    public String sayHello(@RequestParam(value = "name", required = false) String name,
-                           @RequestParam(value = "surname", required = false) String surname,
-                           Model model){
+    private final CalculatorService calculatorService;
 
-        String greetings = "Hello, " +name + " " + surname;
-        model.addAttribute("message", greetings);
+    public FirstController(CalculatorService calculatorService) {
+        this.calculatorService = calculatorService;
+    }
+
+    @GetMapping
+    public String getInitialPage(@ModelAttribute("person")Person person){
+      return "first/login";
+    }
+
+
+    @GetMapping("/hello")
+    public String sayHello(Model model){
         return "first/hello";
     }
 
@@ -27,21 +36,16 @@ public class FirstController {
         return "first/goodbye";
     }
 
-    @GetMapping("/calculator")
-    public String calculate(@RequestParam("a") long a,
-                            @RequestParam("b") long b,
+    @GetMapping ("/calculator")
+    public String calculatorPage(){
+        return "first/calculator";
+    }
+
+    @PostMapping ("/calculator")
+    public String calculate(@RequestParam("number1") long number1,
+                            @RequestParam("number2") long number2,
                             @RequestParam("action") String action, Model model ){
-       double result = 0;
-       switch (action){
-           case "multiplication": result=a*b;
-           break;
-           case "addition":result=a+b;
-           break;
-           case "subtraction":result=a-b;
-           break;
-           case "division":result=a/(double) b;
-           break;
-       }
+       double result = calculatorService.calculate(number1, number2, action);
        model.addAttribute("result", result);
        return "first/calculator";
     }

@@ -37,13 +37,20 @@ public class PeopleController {
         return "people/new";
     }
 
+    @PostMapping("/signIn")
+    public String signIn(@ModelAttribute("person")  Person person, Model model){
+        model.addAttribute("person", personDAO.getByEmail(person.getEmail()));
+        return "first/hello";
+    }
+
     @PostMapping
-    public String savePerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){
+    public String savePerson(@ModelAttribute("person") @Valid Person person,
+                             BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "people/new";
         }
         personDAO.save(person);
-        return "redirect:/person";
+        return "first/hello";
     }
 
     @GetMapping("/{id}/edit")

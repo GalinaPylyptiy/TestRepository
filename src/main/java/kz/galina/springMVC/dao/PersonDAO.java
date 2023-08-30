@@ -19,13 +19,17 @@ public class PersonDAO {
     }
 
     public List<Person> index(){
-     //return jdbcTemplate.query("SELECT*FROM person", new PersonMapper());
         return jdbcTemplate.query("SELECT*FROM person", new BeanPropertyRowMapper<>(Person.class));
     }
 
     public Person show (int id) {
       return jdbcTemplate.query("SELECT*FROM person WHERE id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
-              .stream().findAny().orElse(null);
+              .stream().findAny().orElse(new Person());
+    }
+
+    public Person getByEmail(String email){
+       return jdbcTemplate.query("SELECT*FROM person WHERE email = ?",  new Object[]{email}, new PersonMapper())
+               .stream().findAny().orElseThrow(()-> new RuntimeException("Person with "+ email+ "is not found"));
     }
 
     public void save(Person person){

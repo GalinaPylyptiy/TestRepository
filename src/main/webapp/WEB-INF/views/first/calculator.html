@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/XSL/Transform">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Calculator</title>
 </head>
 <body>
-<h2>Your result: </h2>
+<form th:method="POST" th:action="@{/calculator}">
+    <label for="number1"><h2 th:text=" 'Insert the first number' "></h2></label>
+    <input type="text" name="number1" id="number1">
+    <label for="number2"><h2 th:text=" 'Insert the second number' "></h2></label>
+    <input type="text" name="number2" id="number2">
+    <label for="action"><h2 th:text=" 'Choose action' "></h2></label>
+    <select id="action" name="action">
+        <option th:value=" 'multiply'">Multiply</option>
+        <option th:value="'divide'">Divide</option>
+        <option th:value="'add'">Add</option>
+        <option th:value=" 'subtract' ">Subtract</option>
+    </select>
+    <input type="submit" th:value="'Submit'">
+</form>
+<h2 th:if="${#ctx.containsVariable('result')}"> Result: </h2>
 <h2 th:text="${result}"/>
 </body>
 </html>

@@ -8,15 +8,11 @@
 </head>
 
 <body>
-<h1>Hello!</h1>
-<br/>
-<a href="/first/goodbye"> Say goodbye!</a>
+<h1 th:text="'Hello , '+ ${person.name}"></h1>
+
+<a th:href="@{/calculator}" th:text=" 'Open calculator' "> </a>
 <br/>
 <a href="/exit"> Exit</a>
-<br/>
-<a href="/first/hello?name=James&surname=Carter"> Request with parameters</a>
+
 </body>
-<h2 th:text="${message}"/>
-
-
 </html>
